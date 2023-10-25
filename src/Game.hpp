@@ -20,4 +20,6 @@ class Game {
         bool _playerMovingLeft;
         bool _playerMovingRight;
         bool _playerMovingDown;
+        // seconds per frame for 60fps
+        sf::Time _timePerFrame = sf::seconds(1.f / 60.f);
 };

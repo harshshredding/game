@@ -22,11 +22,15 @@ Game::Game():
 
 void Game::run() {
     sf::Clock clock;
+    sf::Time elapsed = sf::Time::Zero;
     while (_window.isOpen())
     {
-        sf::Time frame_delta = clock.restart();
+        elapsed += clock.restart();
         processEvents();
-        update(frame_delta);
+        while (elapsed > _timePerFrame) {
+            update(_timePerFrame);
+            elapsed -= _timePerFrame;
+        } 
         render();
     }
 }
