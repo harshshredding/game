@@ -16,12 +16,6 @@ Game::Game():
     _playerMovingUp(false),
     _playerMovingRight(false)
 { 
-    if (!_pig_texture.loadFromFile("media/Idle.png")) {
-        print("Could not load Idle.png sprite from media/Idle.png");
-        throw std::exception();
-    }
-    _pig.setTexture(_pig_texture);
-    _pig.setPosition(100.f, 100.f);
 }
 
 
@@ -41,21 +35,18 @@ void Game::run() {
 }
 
 void Game::update(sf::Time delta) {
-    sf::Vector2f player_velocity(0.f, 0.f);
-    if (_playerMovingUp)
-        player_velocity.y -= _pig_speed;
-    if (_playerMovingDown)
-        player_velocity.y += _pig_speed;
-    if (_playerMovingLeft)
-        player_velocity.x -= _pig_speed;
-    if (_playerMovingRight)
-        player_velocity.x += _pig_speed;
-    _pig.move(player_velocity * delta.asSeconds());
+    _player.update(
+        delta,
+        _playerMovingUp,
+        _playerMovingDown,
+        _playerMovingLeft, 
+        _playerMovingRight
+    );
 }
 
 void Game::render() {
     _window.clear();
-    _window.draw(_pig);
+    _window.draw(_player._sprite);
     _window.display();
 }
 

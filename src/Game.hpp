@@ -4,6 +4,10 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "Player.hpp"
+
+#ifndef Game_H  // Include guard to prevent double inclusion
+#define Game_H
 
 class Game {
     public:
@@ -16,13 +20,18 @@ class Game {
         void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     private:
         sf::RenderWindow _window;
-        sf::Texture _pig_texture;
-        sf::Sprite _pig;
-        float _pig_speed = 50.f;
+            
+        // input state
         bool _playerMovingUp;
         bool _playerMovingLeft;
         bool _playerMovingRight;
         bool _playerMovingDown;
         // seconds per frame for 60fps
+
         sf::Time _timePerFrame = sf::seconds(1.f / 60.f);
+
+        // game objects
+        Player _player;
 };
+
+#endif
