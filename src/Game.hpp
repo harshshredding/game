@@ -1,5 +1,7 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
@@ -14,7 +16,8 @@ class Game {
         void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     private:
         sf::RenderWindow _window;
-        sf::CircleShape _pig;
+        sf::Texture _pig_texture;
+        sf::Sprite _pig;
         float _pig_speed = 50.f;
         bool _playerMovingUp;
         bool _playerMovingLeft;

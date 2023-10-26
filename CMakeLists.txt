@@ -10,6 +10,11 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
+# Copy media directory to the build directory
+file(
+    COPY media/
+    DESTINATION media/
+)
 
 file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 

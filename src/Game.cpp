@@ -2,7 +2,9 @@
 #include "SFML/System/Time.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Window/Event.hpp"
+#include <exception>
 #include <iostream>
+#include <stdexcept>
 #include "Game.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Util.hpp"
@@ -14,9 +16,12 @@ Game::Game():
     _playerMovingUp(false),
     _playerMovingRight(false)
 { 
-    _pig.setRadius(30.f);
+    if (!_pig_texture.loadFromFile("media/Idle.png")) {
+        print("Could not load Idle.png sprite from media/Idle.png");
+        throw std::exception();
+    }
+    _pig.setTexture(_pig_texture);
     _pig.setPosition(100.f, 100.f);
-    _pig.setFillColor(sf::Color::Magenta);
 }
 
 
