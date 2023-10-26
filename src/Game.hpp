@@ -5,6 +5,8 @@
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Player.hpp"
+#include <vector>
+#include "Bullet.hpp"
 
 #ifndef Game_H  // Include guard to prevent double inclusion
 #define Game_H
@@ -26,12 +28,14 @@ class Game {
         bool _playerMovingLeft;
         bool _playerMovingRight;
         bool _playerMovingDown;
+        bool _playerShooting;
         // seconds per frame for 60fps
 
         sf::Time _timePerFrame = sf::seconds(1.f / 60.f);
 
         // game objects
         Player _player;
+        std::vector<Bullet> _bullet_list;
 };
 
 #endif

@@ -10,7 +10,7 @@ class Player {
     public:
         sf::Texture _texture;
         sf::Sprite _sprite;
-        float _speed = 80.f;
+        float _speed = 200.f;
 
         Player();
         void update(

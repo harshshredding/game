@@ -8,13 +8,15 @@
 #include "Game.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Util.hpp"
+#include "Bullet.hpp"
 
 Game::Game(): 
     _window({ 640u, 480u }, "Space Pig"),
     _playerMovingDown(false),
     _playerMovingLeft(false),
     _playerMovingUp(false),
-    _playerMovingRight(false)
+    _playerMovingRight(false),
+    _playerShooting(false)
 { 
 }
 
@@ -42,11 +44,18 @@ void Game::update(sf::Time delta) {
         _playerMovingLeft, 
         _playerMovingRight
     );
+    // update all bullets
+    for (auto &bullet: _bullet_list) {
+        bullet.update(delta);
+    }
 }
 
 void Game::render() {
     _window.clear();
     _window.draw(_player._sprite);
+    for (auto &bullet: _bullet_list) {
+        _window.draw(bullet._sprite);
+    }
     _window.display();
 }
 
@@ -59,6 +68,19 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
         _playerMovingLeft = isPressed;
     else if (key == sf::Keyboard::D)
         _playerMovingRight = isPressed;
+    else if (key == sf::Keyboard::Space) {
+        // holding down the spacebar should NOT
+        // shoot multiple times.
+        if (_playerShooting != isPressed) {
+            _playerShooting = isPressed;
+            print("Space");
+            // create a new bullet if space is pressed
+            if (isPressed)
+                _bullet_list.emplace_back(
+                    Bullet(_player._sprite.getPosition().x, _player._sprite.getPosition().y)
+                );
+        }
+    }
 }
 
 // process all window events
@@ -77,7 +99,7 @@ void Game::processEvents() {
                 print("Close Window");
                 break;
             default:
-                print("Cannot handle event type");
+                break;
         }
     }
 }
