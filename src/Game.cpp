@@ -17,10 +17,10 @@ Game::Game():
     _playerMovingUp(false),
     _playerMovingRight(false),
     _playerShooting(false),
-    _enemy(0.f,0.f,30.f)
+    _frame_rate(60)
 { 
+    _timePerFrame = sf::seconds(1.f / _frame_rate);
 }
-
 
 void Game::run() {
     sf::Clock clock;
@@ -50,16 +50,24 @@ void Game::update(sf::Time delta) {
     for (auto &bullet: _bullet_list) {
         bullet.update(delta);
     }
-    _enemy.update(delta);
+    // update all enemies
+    for (auto &enemy: _enemy_list) {
+        enemy.update(delta);
+    }
+    _enemy_spawner.update(_enemy_list, _frame_rate);
 }
 
 void Game::render() {
     _window.clear();
     _window.draw(_player._sprite);
+    // render player bullets
     for (auto &bullet: _bullet_list) {
         _window.draw(bullet._sprite);
     }
-    _window.draw(_enemy._sprite);
+    // render enemies
+    for (auto &enemy: _enemy_list) {
+        _window.draw(enemy._sprite);
+    }
     _window.display();
 }
 
