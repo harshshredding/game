@@ -9,6 +9,7 @@
 #include "Bullet.hpp"
 #include "Enemy.hpp"
 #include "EnemySpawner.hpp"
+#include "EnemyBullet.hpp"
 
 #ifndef Game_H  // Include guard to prevent double inclusion
 #define Game_H
@@ -41,6 +42,7 @@ class Game {
         Player _player;
         std::vector<Bullet> _bullet_list;
         std::vector<Enemy> _enemy_list;
+        std::vector<EnemyBullet> _enemy_bullets;
         EnemySpawner _enemy_spawner;
 };
 

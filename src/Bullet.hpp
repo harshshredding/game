@@ -10,7 +10,7 @@
 class Bullet: public GameObject {
     public:
         Bullet(float positionX, float positionY);
-        void update(sf::Time delta) override;
+        void update(sf::Time delta);
 
 
         // disable copying, but enable moving

@@ -50,9 +50,15 @@ void Game::update(sf::Time delta) {
     for (auto &bullet: _bullet_list) {
         bullet.update(delta);
     }
+
+    // update all enemy bullets
+    for (auto &bullet: _enemy_bullets) {
+        bullet.update(delta);
+    }
+
     // update all enemies
     for (auto &enemy: _enemy_list) {
-        enemy.update(delta);
+        enemy.update(delta, _enemy_bullets);
     }
     _enemy_spawner.update(_enemy_list, _frame_rate);
 
@@ -96,6 +102,12 @@ void Game::render() {
     for (auto &bullet: _bullet_list) {
         _window.draw(bullet._sprite);
     }
+
+    // render enemy bullets
+    for (auto &bullet: _enemy_bullets) {
+        _window.draw(bullet._sprite);
+    }
+
     // render enemies
     for (auto &enemy: _enemy_list) {
         _window.draw(enemy._sprite);

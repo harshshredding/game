@@ -10,6 +10,7 @@ void print(std::string &&str);
 namespace constants {
     const int GAME_WIDTH = 640u;
     const int GAME_HEIGHT = 480u;
+    const int FRAME_RATE = 60;
 }
 
 #endif

@@ -9,7 +9,7 @@
 EnemyBullet::EnemyBullet(
     float positionX,
     float positionY
-): GameObject(positionX, positionY, "media/EnemyBullet.png", 400.f)
+): GameObject(positionX, positionY, "media/EnemyBullet.png", 300.f)
 {
 }
 
@@ -17,7 +17,7 @@ void EnemyBullet::update(
     sf::Time delta
 ) {
     sf::Vector2f bullet_velocity(0.f, 0.f);
-    bullet_velocity.y = -1 * _speed;
+    bullet_velocity.y = 1 * _speed;
     _sprite.move(bullet_velocity * delta.asSeconds());
 }
 
