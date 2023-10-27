@@ -23,7 +23,7 @@ class GameObject {
             float speed
         );
 
-        virtual void update(sf::Time delta) const = 0;
+        virtual void update(sf::Time delta) = 0;
 
         // disable copying, but enable moving
         GameObject(const GameObject&) = delete;

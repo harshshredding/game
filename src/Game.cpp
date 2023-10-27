@@ -16,7 +16,8 @@ Game::Game():
     _playerMovingLeft(false),
     _playerMovingUp(false),
     _playerMovingRight(false),
-    _playerShooting(false)
+    _playerShooting(false),
+    _enemy(0.f,0.f,30.f)
 { 
 }
 
@@ -28,6 +29,7 @@ void Game::run() {
     {
         elapsed += clock.restart();
         processEvents();
+        // Update every 1/60 seconds
         while (elapsed > _timePerFrame) {
             update(_timePerFrame);
             elapsed -= _timePerFrame;
@@ -48,6 +50,7 @@ void Game::update(sf::Time delta) {
     for (auto &bullet: _bullet_list) {
         bullet.update(delta);
     }
+    _enemy.update(delta);
 }
 
 void Game::render() {
@@ -56,6 +59,7 @@ void Game::render() {
     for (auto &bullet: _bullet_list) {
         _window.draw(bullet._sprite);
     }
+    _window.draw(_enemy._sprite);
     _window.display();
 }
 
