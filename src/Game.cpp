@@ -1,3 +1,4 @@
+#include "SFML/Graphics/Color.hpp"
 #include "SFML/System/Clock.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/System/Vector2.hpp"
@@ -5,6 +6,7 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include "Game.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Util.hpp"
@@ -18,18 +20,19 @@ Game::Game():
     _playerMovingUp(false),
     _playerMovingRight(false),
     _playerShooting(false),
-    _frame_rate(60)
+    _frame_rate(60),
+    _player_score(0)
 { 
     _timePerFrame = sf::seconds(1.f / _frame_rate);
 
-    if (!_game_over_font.loadFromFile("media/font.ttf")) {
+    if (!_game_font.loadFromFile("media/OpenSans-Regular.ttf")) {
         std::cerr << "Failed to load font!" << std::endl;
         throw std::exception();
     }
 
 
     // Build the GAME OVER text
-    _game_over_text.setFont(_game_over_font);
+    _game_over_text.setFont(_game_font);
     _game_over_text.setString("GAME OVER");
     _game_over_text.setCharacterSize(50);     
     _game_over_text.setFillColor(sf::Color::White); 
@@ -41,7 +44,18 @@ Game::Game():
     _game_over_text.setOrigin(textRect.left + textRect.width/2.0f,
                    textRect.top  + textRect.height/2.0f);
     _game_over_text.setPosition(sf::Vector2f(_window.getSize().x/2.0f, _window.getSize().y/2.0f));
-    std::cout << "(" << _game_over_text.getPosition().x << " " << _game_over_text.getPosition().y << ")" << std::endl;
+
+
+    // Build score text
+    _score_text.setFont(_game_font);
+    _score_text.setString(getPlayerScoreString());
+    _score_text.setCharacterSize(15);     
+    _score_text.setFillColor(sf::Color::White); 
+    _score_text.setPosition(sf::Vector2f(580, 10));
+}
+
+std::string Game::getPlayerScoreString() {
+    return "Score " + std::to_string(_player_score);
 }
 
 void Game::run() {
@@ -97,6 +111,11 @@ void Game::update(sf::Time delta) {
                 print("Coliding!");
                 bullet._isDead = true;
                 enemy._isDead = true;
+                _player_score += 1;
+                if (_player_score == 20) {
+                    _is_game_over = true;
+                    _game_over_text.setFillColor(sf::Color::Green);
+                }
             }
         }
     }
@@ -107,6 +126,7 @@ void Game::update(sf::Time delta) {
             print("GAME OVER!");
             _player._isDead = true;
             _is_game_over = true;
+            _game_over_text.setFillColor(sf::Color::Red);
         }
     }
 
@@ -164,6 +184,10 @@ void Game::render() {
         _window.draw(_game_over_text);
     }
 
+
+    _score_text.setString(getPlayerScoreString());
+    _window.draw(_score_text);
+
     _window.display();
 }
 
@@ -177,6 +201,10 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
     else if (key == sf::Keyboard::D)
         _playerMovingRight = isPressed;
     else if (key == sf::Keyboard::Space) {
+        if (_is_game_over) {
+            restartGame();
+            return;
+        }
         // holding down the spacebar should NOT
         // shoot multiple times.
         if (_playerShooting != isPressed) {
@@ -188,7 +216,20 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
                     Bullet(_player._sprite.getPosition().x, _player._sprite.getPosition().y)
                 );
         }
+    } else if (key == sf::Keyboard::Enter) {
+        if (_is_game_over) {
+            restartGame();
+            return;
+        }
     }
+}
+
+void Game::restartGame() {
+    _enemy_bullets.clear();
+    _enemy_list.clear();
+    _bullet_list.clear();
+    _is_game_over = false;
+    _player_score = 0;
 }
 
 // process all window events

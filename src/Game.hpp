@@ -7,6 +7,7 @@
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Player.hpp"
+#include <string>
 #include <vector>
 #include "Bullet.hpp"
 #include "Enemy.hpp"
@@ -26,11 +27,19 @@ class Game {
         void processEvents();
         void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
         bool areSpritesColliding(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
+        void restartGame();
+        void restartGameIfOver();
+        std::string getPlayerScoreString();
+
     private:
         bool _is_game_over = false;
 
         sf::RenderWindow _window;
             
+        // game objects
+        Player _player;
+        int _player_score = 0;
+
         // input state
         bool _playerMovingUp;
         bool _playerMovingLeft;
@@ -42,17 +51,19 @@ class Game {
         int _frame_rate;
         sf::Time _timePerFrame;
 
-        // game objects
-        Player _player;
         std::vector<Bullet> _bullet_list;
         std::vector<Enemy> _enemy_list;
         std::vector<EnemyBullet> _enemy_bullets;
         EnemySpawner _enemy_spawner;
 
 
-        // GAME OVER
+        // GAME OVER text
         sf::Text _game_over_text;
-        sf::Font _game_over_font;
+        sf::Font _game_font;
+
+        // Player Score text
+        sf::Text _score_text;
+
 };
 
 #endif
