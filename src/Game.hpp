@@ -22,6 +22,7 @@ class Game {
         void render();
         void processEvents();
         void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+        bool areSpritesColliding(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
     private:
         sf::RenderWindow _window;
             

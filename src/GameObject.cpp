@@ -34,11 +34,13 @@ GameObject::GameObject(GameObject &&other)
     _texture = std::move(other._texture);
     _sprite = std::move(other._sprite);
     _speed = other._speed;
+    _isDead = other._isDead;
 }
 
 GameObject& GameObject::operator=(GameObject&& other) {
     _texture = std::move(other._texture);
     _sprite = std::move(other._sprite);
     _speed = other._speed;
+    _isDead = other._isDead;
     return *this;
 }

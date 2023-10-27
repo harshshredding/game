@@ -12,7 +12,7 @@ class GameObject {
         std::unique_ptr<sf::Texture> _texture;
         sf::Sprite _sprite;
         float _speed;
-
+        bool _isDead = false;
 
         GameObject();
 

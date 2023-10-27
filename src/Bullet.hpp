@@ -3,18 +3,14 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Time.hpp"
 #include <memory>
-
+#include "GameObject.hpp"
 
 #ifndef Bullet_H
 #define Bullet_H
-class Bullet {
+class Bullet: public GameObject {
     public:
-        std::unique_ptr<sf::Texture> _texture;
-        sf::Sprite _sprite;
-        float _speed = 400.f;
-
         Bullet(float positionX, float positionY);
-        void update(sf::Time delta);
+        void update(sf::Time delta) override;
 
 
         // disable copying, but enable moving

@@ -6,7 +6,6 @@ Enemy::Enemy(
     float speed
 ): GameObject(positionX, positionY, "media/Enemy.png", speed)
 {
-
 }
 
 Enemy::Enemy(Enemy &&other)
@@ -14,12 +13,14 @@ Enemy::Enemy(Enemy &&other)
     _texture = std::move(other._texture);
     _sprite = std::move(other._sprite);
     _speed = other._speed;
+    _isDead = other._isDead;
 }
 
 Enemy& Enemy::operator=(Enemy&& other) {
     _texture = std::move(other._texture);
     _sprite = std::move(other._sprite);
     _speed = other._speed;
+    _isDead = other._isDead;
     return *this;
 }
 

@@ -55,6 +55,38 @@ void Game::update(sf::Time delta) {
         enemy.update(delta);
     }
     _enemy_spawner.update(_enemy_list, _frame_rate);
+
+    // mark enemies that have collided with the
+    // bullets and died
+    for (auto &bullet: _bullet_list) {
+        for (auto &enemy: _enemy_list) {
+            if (areSpritesColliding(bullet._sprite, enemy._sprite)) {
+                print("Coliding!");
+                bullet._isDead = true;
+                enemy._isDead = true;
+            }
+        }
+    }
+
+    // remove dead enemies
+    std::vector<Enemy>::iterator enemy_it = _enemy_list.begin();
+    while(enemy_it != _enemy_list.end()) {
+        if (enemy_it->_isDead) {
+            enemy_it = _enemy_list.erase(enemy_it);
+            print("Erasing enemy");
+        }
+        else ++enemy_it;
+    }
+
+    // remove destroyed bullets
+    std::vector<Bullet>::iterator bullet_it = _bullet_list.begin();
+    while(bullet_it != _bullet_list.end()) {
+        if (bullet_it->_isDead) {
+            bullet_it = _bullet_list.erase(bullet_it);
+            print("Erasing bullet");
+        }
+        else ++bullet_it;
+    }
 }
 
 void Game::render() {
@@ -114,4 +146,8 @@ void Game::processEvents() {
                 break;
         }
     }
+}
+
+bool Game::areSpritesColliding(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
+    return sprite1.getGlobalBounds().intersects(sprite2.getGlobalBounds());
 }
