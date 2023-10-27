@@ -2,15 +2,9 @@
 #include "SFML/System/Time.hpp"
 #include "Util.hpp"
 
-Player::Player() {
-    if (!_texture.loadFromFile("media/Idle.png")) {
-        print("Could not load Idle.png sprite from media/Idle.png");
-        throw std::exception();
-    }
-    _sprite.setTexture(_texture);
-    _sprite.setPosition(100.f, 100.f);
-}
-
+Player::Player(): 
+GameObject(400.f, 400.f, "media/Idle.png", 200.f)
+{}
 
 void Player::update(
     sf::Time delta,

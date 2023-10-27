@@ -2,16 +2,12 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Time.hpp"
-
+#include "GameObject.hpp"
 
 #ifndef Player_H
 #define Player_H
-class Player {
+class Player: public GameObject {
     public:
-        sf::Texture _texture;
-        sf::Sprite _sprite;
-        float _speed = 200.f;
-
         Player();
         void update(
             sf::Time delta,

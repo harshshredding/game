@@ -1,6 +1,8 @@
 #include "SFML/Graphics/CircleShape.hpp"
+#include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Keyboard.hpp"
@@ -25,6 +27,8 @@ class Game {
         void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
         bool areSpritesColliding(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
     private:
+        bool _is_game_over = false;
+
         sf::RenderWindow _window;
             
         // input state
@@ -44,6 +48,11 @@ class Game {
         std::vector<Enemy> _enemy_list;
         std::vector<EnemyBullet> _enemy_bullets;
         EnemySpawner _enemy_spawner;
+
+
+        // GAME OVER
+        sf::Text _game_over_text;
+        sf::Font _game_over_font;
 };
 
 #endif

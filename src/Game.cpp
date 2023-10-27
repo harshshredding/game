@@ -12,6 +12,7 @@
 
 Game::Game(): 
     _window({ 640u, 480u }, "Space Pig"),
+    _is_game_over(false),
     _playerMovingDown(false),
     _playerMovingLeft(false),
     _playerMovingUp(false),
@@ -20,6 +21,27 @@ Game::Game():
     _frame_rate(60)
 { 
     _timePerFrame = sf::seconds(1.f / _frame_rate);
+
+    if (!_game_over_font.loadFromFile("media/font.ttf")) {
+        std::cerr << "Failed to load font!" << std::endl;
+        throw std::exception();
+    }
+
+
+    // Build the GAME OVER text
+    _game_over_text.setFont(_game_over_font);
+    _game_over_text.setString("GAME OVER");
+    _game_over_text.setCharacterSize(50);     
+    _game_over_text.setFillColor(sf::Color::White); 
+    _game_over_text.setStyle(sf::Text::Bold);        
+
+    // Position the text with respect to the origin
+    // and the window
+    sf::FloatRect textRect = _game_over_text.getLocalBounds();
+    _game_over_text.setOrigin(textRect.left + textRect.width/2.0f,
+                   textRect.top  + textRect.height/2.0f);
+    _game_over_text.setPosition(sf::Vector2f(_window.getSize().x/2.0f, _window.getSize().y/2.0f));
+    std::cout << "(" << _game_over_text.getPosition().x << " " << _game_over_text.getPosition().y << ")" << std::endl;
 }
 
 void Game::run() {
@@ -39,6 +61,11 @@ void Game::run() {
 }
 
 void Game::update(sf::Time delta) {
+    // Freeze if the game is over
+    if (_is_game_over) {
+        return;
+    }
+
     _player.update(
         delta,
         _playerMovingUp,
@@ -74,6 +101,15 @@ void Game::update(sf::Time delta) {
         }
     }
 
+    // check if we have collided with a bullet
+    for (auto &enemy_bullet: _enemy_bullets) {
+        if (areSpritesColliding(enemy_bullet._sprite, _player._sprite)) {
+            print("GAME OVER!");
+            _player._isDead = true;
+            _is_game_over = true;
+        }
+    }
+
     // remove dead enemies
     std::vector<Enemy>::iterator enemy_it = _enemy_list.begin();
     while(enemy_it != _enemy_list.end()) {
@@ -92,6 +128,17 @@ void Game::update(sf::Time delta) {
             print("Erasing bullet");
         }
         else ++bullet_it;
+    }
+
+
+    // remove destroyed enemy bullets
+    std::vector<EnemyBullet>::iterator enemy_bullet_it = _enemy_bullets.begin();
+    while(enemy_bullet_it != _enemy_bullets.end()) {
+        if (enemy_bullet_it->_isDead) {
+            enemy_bullet_it = _enemy_bullets.erase(enemy_bullet_it);
+            print("Erasing enemy bullet");
+        }
+        else ++enemy_bullet_it;
     }
 }
 
@@ -112,6 +159,11 @@ void Game::render() {
     for (auto &enemy: _enemy_list) {
         _window.draw(enemy._sprite);
     }
+
+    if (_is_game_over) {
+        _window.draw(_game_over_text);
+    }
+
     _window.display();
 }
 
