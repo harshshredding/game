@@ -63,7 +63,6 @@ class Game {
 
         // Player Score text
         sf::Text _score_text;
-
 };
 
 #endif
